@@ -16,36 +16,42 @@ Note that a lot of the simulations were left out due to their big file size. How
 
 Now some instructions follow to perform some of the tasks from the report:
 
-(1) Open-loop autonomous simulations:
-This is all contained into the function "main_No_Ext_Control"
+1. Open-loop autonomous simulations:
+This is all contained into the function [main_No_Ext_Control.m](https://github.com/adrianma/Master_project/blob/8972818d1bed932a1208f4c3d0a83e5f9be7cb66/Codes/ADRIAN/main_No_Ext_Control.m)
 You have to basically generate the population; then construct the water draws; and lastly simulate with the selected number of EWHs n_app
 (Note that you have to generate these files, since they are not provided)  
 An example function call:
+```
 % number of EWHs and number of simulations
 n_app = 1000; % EWHs
 N_experiments = 20; % simulations
 main_No_Ext_Control(n_app,N_experiments)
+```
 
-(2) Generate Set-point variation experiments for ARMAX System ID:
-Use the file "main_experiments" (which also supports Probability Switching):
+2. Generate Set-point variation experiments for ARMAX System ID:
+Use the file [main_experiments.m](https://github.com/adrianma/Master_project/blob/8972818d1bed932a1208f4c3d0a83e5f9be7cb66/Codes/ADRIAN/main_experiments.m) (which also supports Probability Switching):
+```
 % Example (copy-paste these 4 lines into your Matlab prompt)
 % get the data for 1000EWHs at hour 16
 my_hour = 16;
 main_experiments('SetPointVariation',my_hour,1000,1);
+```
 
-(3) Process the Data for System ID:
-Use the function "Data_system_ID.m", where the call could be for example as follows:
+3. Process the Data for System ID:
+Use the function [Data_system_ID.m](https://github.com/adrianma/Master_project/blob/8972818d1bed932a1208f4c3d0a83e5f9be7cb66/Codes/ADRIAN/System_ID/Data_manipulation/Data_system_ID.m), where the call could be for example as follows:
+```
 % substract the averaged baseline for output
 % choose as exogenous input the averaged water draws
 my_Data = Data_system_ID('SetPointVariation',[3,9],1000,2,3,1);
+```
 
-(4) Assess the models (only works for data of hours 4,7,12,16,18,20,22):
-Use the file "Assess_houly.m": This function splits the data into their hours, separates by sign and generates the ARMAX (or state-space) models.
+4. Assess the models (only works for data of hours 4,7,12,16,18,20,22):
+Use the file [Assess_houly.m](https://github.com/adrianma/Master_project/blob/8972818d1bed932a1208f4c3d0a83e5f9be7cb66/Codes/ADRIAN/System_ID/Assess_hourly.m): This function splits the data into their hours, separates by sign and generates the ARMAX (or state-space) models.
 
-Note: the models computed by me and presented in Table 4.1 of the written thesis are stored in "archived_data/SPV/Data_same/15032015_same_SPV.mat"
+Note: the models computed by me and presented in Table 4.1 of the written thesis are stored in [15032015_same_SPV.mat](https://github.com/adrianma/Master_project/tree/master/Codes/archived_data/SPV/1000EWH/Data_same)
 
-(5) Closed loop MPC control:
+5. Closed loop MPC control:
 (This assumes that you have the GUROBI solver installed. Please see www.gurobi.com for installation)
-I generated a script that runs the examples for artifical signals for the MPC controller for the given parameters of the thesis. You just simply have to run the script "experiments_ClosedLoop.m"
+I generated a script that runs the examples for artifical signals for the MPC controller for the given parameters of the thesis. You just simply have to run the script [experiments_ClosedLoop.m](https://github.com/adrianma/Master_project/blob/8972818d1bed932a1208f4c3d0a83e5f9be7cb66/Codes/ADRIAN/External_CQP_controller/experiments_ClosedLoop.m)
 Take into account that there are LOTS of options to be added into the closed loop simulation (saving file options, changing the cost function, changing horizon, etc). 
-It should be all documented in that script or within the file "main_CL_simulation".
+It should be all documented in that script or within the file [main_CL_simulation](https://github.com/adrianma/Master_project/blob/8972818d1bed932a1208f4c3d0a83e5f9be7cb66/Codes/ADRIAN/External_CQP_controller/main_CL_simulation.m).
